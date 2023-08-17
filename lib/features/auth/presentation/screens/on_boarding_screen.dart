@@ -25,6 +25,7 @@ class OnBoardingScreen extends StatelessWidget {
                   "WEATHER SERVICE",
                   style: TextStyle(
                     fontSize: 48.sp,
+                    fontFamily: "Inter",
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
                   ),
@@ -33,6 +34,7 @@ class OnBoardingScreen extends StatelessWidget {
                 Text(
                   "dawn is coming soon",
                   style: TextStyle(
+                    fontFamily: "Inter",
                     fontWeight: FontWeight.w300,
                     color: Colors.white,
                     fontSize: 24.sp,
