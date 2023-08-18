@@ -17,16 +17,5 @@ class Assets {
   static const String tBigCloudLight = 'assets/images/big_cloud_lightning.png';
   static const String tBigSun = 'assets/images/big_sun.png';
 
-  // Icons
-  static const String tCameraInSquareIcon =
-      'assets/svg/camera_in_square_icon.svg';
-  static const String tEyeIcon = 'assets/svg/eye_icon.svg';
-  static const String tEyeIconClosedIcon = 'assets/svg/eye_icon_closed.svg';
-  static const String tPencilIcon = 'assets/svg/pencil.svg';
-  static const String tPlusInSquareIcon = 'assets/svg/plus_in_square_icon.svg';
-  static const String tQuestionCircleIcon = 'assets/svg/question-circle.svg';
-  static const String tReciveMoneyIcon = 'assets/svg/recive_money.svg';
-  static const String tCloseIcon = 'assets/svg/x.svg';
-  static const String tCloseIcon2 = 'assets/svg/close_icon.svg';
-  static const String tCheckedIcon = 'assets/svg/checked.svg';
+
 }

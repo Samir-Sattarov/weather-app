@@ -1,10 +1,27 @@
+import 'dart:async';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_weather_app/features/auth/presentation/screens/sign_in_screen.dart';
 
 import '../../../../core/utils/app_colors.dart';
 
-class OnBoardingScreen extends StatelessWidget {
+class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
+
+  @override
+  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
+}
+
+class _OnBoardingScreenState extends State<OnBoardingScreen> {
+  @override
+  void initState() {
+    Timer(const Duration(seconds: 2), () {
+      Navigator.push(context, SignInScreen.route());
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +39,7 @@ class OnBoardingScreen extends StatelessWidget {
               children: [
                 const Spacer(),
                 Text(
-                  "WEATHER SERVICE",
+                  "weatherService".tr().toUpperCase(),
                   style: TextStyle(
                     fontSize: 48.sp,
                     fontFamily: "Inter",
@@ -32,7 +49,7 @@ class OnBoardingScreen extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  "dawn is coming soon",
+                  "dawnIsComing".tr(),
                   style: TextStyle(
                     fontFamily: "Inter",
                     fontWeight: FontWeight.w300,

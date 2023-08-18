@@ -49,6 +49,7 @@ dependencies:
   get_it: ^7.6.0
   firebase_core: ^2.15.1
   cloud_firestore: ^4.8.5
+  flutter_keyboard_visibility: ^5.4.1
 
 dev_dependencies:
   flutter_test:
@@ -60,10 +61,12 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/
     - assets/translations/
     - assets/images/
     - assets/fonts/
     - assets/logo/
+    - assets/svg/
     - assets/fonts/
     - assets/fonts/inter/
     - assets/fonts/roboto/
@@ -73,46 +76,46 @@ flutter:
   fonts:
     - family: Ubuntu
       fonts:
-        - asset: fonts/Ubuntu-Bold.ttf
-        - asset: fonts/Ubuntu-BoldItalic.ttf
+        - asset: assets/fonts/ubuntu/Ubuntu-Bold.ttf
+        - asset: assets/fonts/ubuntu/Ubuntu-BoldItalic.ttf
           style: italic
-        - asset: fonts/Ubuntu-Italic.ttf
+        - asset: assets/fonts/ubuntu/Ubuntu-Italic.ttf
           style: italic
-        - asset: fonts/Ubuntu-Light.ttf
-        - asset: fonts/Ubuntu-LightItalic.ttf
+        - asset: assets/fonts/ubuntu/Ubuntu-Light.ttf
+        - asset: assets/fonts/ubuntu/Ubuntu-LightItalic.ttf
           style: italic
-        - asset: fonts/Ubuntu-Medium.ttf
-        - asset: fonts/Ubuntu-MediumItalic.ttf
+        - asset: assets/fonts/ubuntu/Ubuntu-Medium.ttf
+        - asset: assets/fonts/ubuntu/Ubuntu-MediumItalic.ttf
           style: italic
-        - asset: fonts/Ubuntu-Regular.ttf
+        - asset: assets/fonts/ubuntu/Ubuntu-Regular.ttf
     - family: Roboto
       fonts:
-        - asset: fonts/Roboto-Black.ttf
-        - asset: fonts/Roboto-BlackItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-Black.ttf
+        - asset: assets/fonts/roboto/Roboto-BlackItalic.ttf
           style: italic
-        - asset: fonts/Roboto-Bold.ttf
-        - asset: fonts/Roboto-BoldItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-Bold.ttf
+        - asset: assets/fonts/roboto/Roboto-BoldItalic.ttf
           style: italic
-        - asset: fonts/Roboto-Italic.ttf
+        - asset: assets/fonts/roboto/Roboto-Italic.ttf
           style: italic
-        - asset: fonts/Roboto-Light.ttf
-        - asset: fonts/Roboto-LightItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-Light.ttf
+        - asset: assets/fonts/roboto/Roboto-LightItalic.ttf
           style: italic
-        - asset: fonts/Roboto-Medium.ttf
-        - asset: fonts/Roboto-MediumItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-Medium.ttf
+        - asset: assets/fonts/roboto/Roboto-MediumItalic.ttf
           style: italic
-        - asset: fonts/Roboto-Regular.ttf
-        - asset: fonts/Roboto-Thin.ttf
-        - asset: fonts/Roboto-ThinItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-Regular.ttf
+        - asset: assets/fonts/roboto/Roboto-Thin.ttf
+        - asset: assets/fonts/roboto/Roboto-ThinItalic.ttf
           style: italic
     - family: Inter
       fonts:
-        - asset: fonts/Inter-Black.ttf
-        - asset: fonts/Inter-Bold.ttf
-        - asset: fonts/Inter-ExtraBold.ttf
-        - asset: fonts/Inter-ExtraLight.ttf
-        - asset: fonts/Inter-Light.ttf
-        - asset: fonts/Inter-Medium.ttf
-        - asset: fonts/Inter-Regular.ttf
-        - asset: fonts/Inter-SemiBold.ttf
-        - asset: fonts/Inter-Thin.ttf
+        - asset: assets/fonts/inter/Inter-Black.ttf
+        - asset: assets/fonts/inter/Inter-Bold.ttf
+        - asset: assets/fonts/inter/Inter-ExtraBold.ttf
+        - asset: assets/fonts/inter/Inter-ExtraLight.ttf
+        - asset: assets/fonts/inter/Inter-Light.ttf
+        - asset: assets/fonts/inter/Inter-Medium.ttf
+        - asset: assets/fonts/inter/Inter-Regular.ttf
+        - asset: assets/fonts/inter/Inter-SemiBold.ttf
+        - asset: assets/fonts/inter/Inter-Thin.ttf

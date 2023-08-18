@@ -1,12 +1,147 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-//
-// import '../utils/app_colors.dart';
-// import '../utils/assets.dart';
-// import '../utils/responsive.dart';
-//
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import '../utils/app_colors.dart';
+import '../utils/assets.dart';
+import '../utils/responsive.dart';
+
+class TextFormFieldWidget extends StatefulWidget {
+  final TextEditingController controller;
+  final String label;
+  final bool? enabled;
+  final bool isPassword;
+  final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+  final Function(String?)? onChanged;
+  final Function(String?)? onSubmit;
+  final TextInputFormatter? textInputFormatter;
+  const TextFormFieldWidget({
+    Key? key,
+    required this.controller,
+    required this.label,
+    this.enabled,
+    this.validator,
+    this.isPassword = false,
+    this.keyboardType,
+    this.onChanged,
+    this.onSubmit,
+    this.textInputFormatter,
+  }) : super(key: key);
+
+  @override
+  State<TextFormFieldWidget> createState() => _TextFormFieldWidgetState();
+}
+
+class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
+  bool isObscure = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: 335.w,
+      ),
+      child: Center(
+        child: TextFormField(
+          autofocus: false,
+          cursorColor: AppColors.red,
+          enabled: widget.enabled,
+          onFieldSubmitted: (value) => widget.onSubmit?.call(value),
+          onChanged: (String? value) => widget.onChanged?.call(value),
+          validator: widget.validator,
+          controller: widget.controller,
+          keyboardType: widget.keyboardType,
+          obscureText: widget.isPassword && isObscure,
+          inputFormatters: widget.textInputFormatter != null
+              ? [
+                  widget.textInputFormatter!,
+                ]
+              : null,
+          maxLines: 1,
+          minLines: 1,
+          style: TextStyle(
+            color: const Color(0xff2B2D33),
+            fontStyle: FontStyle.normal,
+            fontFamily: "Roboto",
+            fontWeight: FontWeight.w500,
+            fontSize: 17.sp,
+          ),
+          textAlign: TextAlign.left,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(vertical: 10.h),
+            isCollapsed: false,
+            fillColor: Colors.white,
+            isDense: true,
+            filled: true,
+            suffixIcon: _passwordIcon(),
+            labelText: widget.label,
+            labelStyle: TextStyle(
+              color: const Color(0xff8799A5),
+              fontStyle: FontStyle.normal,
+              fontFamily: "Roboto",
+              fontWeight: FontWeight.w500,
+              fontSize: 17.sp,
+            ),
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Color(0xffE4E6EC),
+                width: 2,
+              ),
+            ),
+            errorBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: AppColors.red,
+                width: 2,
+              ),
+            ),
+            disabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.grey.shade700,
+                width: 2,
+              ),
+            ),
+            focusedErrorBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: AppColors.red,
+                width: 2,
+              ),
+            ),
+            border: const UnderlineInputBorder(
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Color(0xff0700FF),
+                width: 2,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget? _passwordIcon() {
+    if (widget.isPassword) {
+      return GestureDetector(
+        onTap: () => setState(() => isObscure = !isObscure),
+        child: SizedBox(
+          height: 24.r,
+          width: 24.r,
+          child: Center(
+            child: SvgPicture.asset(
+              isObscure ? Assets.tClosedEye : Assets.tOpenEye,
+            ),
+          ),
+        ),
+      );
+    }
+    return null;
+  }
+}
+
 // class TextFormFieldWidget extends StatefulWidget {
 //   final TextEditingController controller;
 //   final String hintText;

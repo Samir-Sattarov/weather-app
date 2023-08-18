@@ -9,13 +9,21 @@ import '../../features/auth/data/datasources/authentication_local_data_source.da
 import 'api_constants.dart';
 import 'api_exceptions.dart';
 
-class ApiClient {
+abstract class Api {
+  Future<dynamic> get(String path, {Map<dynamic, dynamic>? params});
+  Future<dynamic> post(String path,
+      {Map<dynamic, dynamic>? params, bool withToken = true});
+  Future<dynamic> put(String path, {Map<dynamic, dynamic>? params});
+}
+
+class ApiClient extends Api {
   final AuthenticationLocalDataSource _authenticationLocalDataSource;
   final Client _client;
 
   ApiClient(this._client, this._authenticationLocalDataSource);
 
-  dynamic get(String path, {Map<dynamic, dynamic>? params}) async {
+  @override
+  Future<dynamic> get(String path, {Map<dynamic, dynamic>? params}) async {
     String sessionId =
         await _authenticationLocalDataSource.getSessionId() ?? "";
 
@@ -127,7 +135,8 @@ class ApiClient {
     // }
   }
 
-  dynamic post(String path,
+  @override
+  Future<dynamic> post(String path,
       {Map<dynamic, dynamic>? params, bool withToken = true}) async {
     String sessionId =
         await _authenticationLocalDataSource.getSessionId() ?? "";
@@ -194,7 +203,8 @@ class ApiClient {
     }
   }
 
-  dynamic put(String path, {Map<dynamic, dynamic>? params}) async {
+  @override
+  Future<dynamic> put(String path, {Map<dynamic, dynamic>? params}) async {
     String sessionId =
         await _authenticationLocalDataSource.getSessionId() ?? "";
     Map<String, String> userHeader = {

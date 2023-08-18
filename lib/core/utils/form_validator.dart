@@ -47,16 +47,4 @@ class FormValidator {
     return null;
   }
 
-  static String? sumIsLessThanLimit(String? value, double limit) {
-    if (value == null || value.isEmpty) {
-      return "";
-    }
-
-    final sum = double.parse(value ?? "0");
-    if (sum > limit) {
-      return "errorTextBalanceLess".tr();
-    }
-
-    return null;
-  }
 }
