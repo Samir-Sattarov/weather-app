@@ -8,6 +8,9 @@ class Assets {
   static const String tSun = 'assets/svg/sun.svg';
   static const String tOpenEye = 'assets/svg/open_eye.svg';
   static const String tClosedEye = 'assets/svg/closed_eye.svg';
+  static const String tLocation = 'assets/svg/location.svg';
+  static const String tWindy = 'assets/svg/windy.svg';
+  static const String tDrop = 'assets/svg/drop.svg';
 
   // Pngs
   static const String tBigCloudSun = 'assets/images/big_cloud_sun.png';

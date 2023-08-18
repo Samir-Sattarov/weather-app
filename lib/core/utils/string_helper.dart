@@ -29,8 +29,6 @@ class StringHelper {
         return '';
     }
   }
-  static String getCardNumberForCard(String cardNumber) {
-return cardNumber.substring(cardNumber.length - 4);;
-  }
+
 
 }

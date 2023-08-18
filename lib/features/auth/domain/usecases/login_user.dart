@@ -6,12 +6,23 @@ import '../../data/models/request_token_model.dart';
 import '../entities/login_request_params.dart';
 import '../repositories/authentication_repository.dart';
 
-class LoginUser extends UseCase<bool, LoginRequestParams> {
+class SignIn extends UseCase<bool, LoginRequestParams> {
   final AuthenticationRepository _authenticationRepository;
 
-  LoginUser(this._authenticationRepository);
+  SignIn(this._authenticationRepository);
 
   @override
   Future<Either<AppError, bool>> call(LoginRequestParams params) async =>
-      _authenticationRepository.loginUser(params.toJson());
+      _authenticationRepository.signIn(params);
+}
+
+
+class SignUp extends UseCase<bool, LoginRequestParams> {
+  final AuthenticationRepository _authenticationRepository;
+
+  SignUp(this._authenticationRepository);
+
+  @override
+  Future<Either<AppError, bool>> call(LoginRequestParams params) async =>
+      _authenticationRepository.signUp(params);
 }

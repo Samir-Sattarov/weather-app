@@ -9,5 +9,9 @@ class ApiConstants {
   static const String _weatherApiKey = "data";
   static const String _firebaseApiKey = "AIzaSyCVpz6S4FV2oJ4LM4sPvCOYIDM2mPBOuko";
   static const String signIn = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$_firebaseApiKey";
+  static const String usersCollection = "users";
+
 
 }
+
+

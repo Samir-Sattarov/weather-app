@@ -2,9 +2,11 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../core/api/api_exceptions.dart';
 import '../../../../core/entities/app_error.dart';
+import '../../domain/entities/login_request_params.dart';
 import '../../domain/repositories/authentication_repository.dart';
 import '../datasources/authentication_local_data_source.dart';
 import '../datasources/authentication_remote_data_source.dart';
@@ -23,6 +25,8 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   Future<Either<AppError, bool>> logginedUser() async {
     final sessionId = await _authenticationLocalDataSource.getSessionId();
 
+    print("Session $sessionId");
+
     if (sessionId == null || sessionId.isEmpty) {
       return const Right(false);
     } else {
@@ -31,13 +35,14 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }
 
   @override
-  Future<Either<AppError, bool>> loginUser(Map<String,dynamic> model) async {
+  Future<Either<AppError, bool>> signIn(LoginRequestParams params) async {
     try {
-      final validateWithLoginToken =
-          await _authenticationRemoteDataSource.validateWithLogin(model);
+      final token = await _authenticationRemoteDataSource.signIn(params);
+
+      log(token);
 
       await _authenticationLocalDataSource
-          .saveSessionId(validateWithLoginToken.token);
+          .saveSessionId(token);
 
       return const Right(true);
     } on SocketException {
@@ -53,16 +58,20 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }
 
   @override
-  Future<Either<AppError, void>> logoutUser() async {
-    final sessionId = await _authenticationLocalDataSource.getSessionId();
-    if (sessionId != null) {
-      await Future.wait([
-        // _authenticationRemoteDataSource.deleteSession(sessionId),
-        _authenticationLocalDataSource.deleteSessionId(),
-      ]);
+  Future<Either<AppError, bool>> signUp(LoginRequestParams params) async {
+    try {
+      final response = await _authenticationRemoteDataSource.signUp(params);
+
+
+      return Right(response);
+    } on Exception {
+      return const Left(AppError(appErrorType: AppErrorType.api));
     }
-    return const Right(null);
   }
 
-
+  @override
+  Future<Either<AppError, void>> logoutUser() async {
+    _authenticationLocalDataSource.deleteSessionId();
+    return const Right(null);
+  }
 }

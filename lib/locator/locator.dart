@@ -1,3 +1,4 @@
+import 'package:flutter_weather_app/core/api/firebase_auth.dart';
 import 'package:flutter_weather_app/features/auth/presentation/cubit/login_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
@@ -11,14 +12,18 @@ import '../features/auth/domain/usecases/auth.dart';
 import '../features/auth/domain/usecases/login_user.dart';
 import '../features/auth/domain/usecases/logout_user.dart';
 import '../features/auth/presentation/cubit/auth/auth_cubit.dart';
+import '../features/auth/presentation/cubit/sign_up/sign_up_cubit.dart';
 
 final locator = GetIt.I;
 
 void setup() {
   // ================ BLoC / Cubit ================ //
   locator.registerFactory(() => LoginCubit(
-        loginUser: locator(),
+        signInUsecase: locator(),
         logoutUser: locator(),
+      ));
+  locator.registerFactory(() => SignUpCubit(
+         locator(),
       ));
 
   // locator.registerFactory(() => LocaleCubit(
@@ -28,7 +33,8 @@ void setup() {
       ));
 
   // ================ UseCases ================ //
-  locator.registerLazySingleton<LoginUser>(() => LoginUser(locator()));
+  locator.registerLazySingleton<SignIn>(() => SignIn(locator()));
+  locator.registerLazySingleton<SignUp>(() => SignUp(locator()));
   locator.registerLazySingleton<LogoutUser>(() => LogoutUser(locator()));
 
   // User
@@ -73,7 +79,8 @@ void setup() {
   locator.registerLazySingleton<Client>(() => Client());
 
   locator
-      .registerLazySingleton<ApiClient>(() => ApiClient(locator(), locator()));
+      .registerLazySingleton<ApiClient>(() => ApiClient(locator(), locator())); locator
+      .registerLazySingleton<FirebaseAuthentication>(() => FirebaseAuthentication());
 
   // ================ External ================ //
 }

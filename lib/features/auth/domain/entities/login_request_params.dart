@@ -1,16 +1,16 @@
 import '../../../../core/api/api_constants.dart';
 
 class LoginRequestParams {
-  final String userName;
+  final String email;
   final String password;
 
   LoginRequestParams({
-    required this.userName,
+    required this.email,
     required this.password,
   });
 
   Map<String, dynamic> toJson() => {
-        'user': userName,
-        'pass': password,
+        'email': email,
+        'password': password,
       };
 }

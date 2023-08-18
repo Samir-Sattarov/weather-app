@@ -1,4 +1,5 @@
-import 'package:hive/hive.dart';
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 abstract class AuthenticationLocalDataSource {
   Future<void> saveSessionId(String sessionId);
@@ -7,21 +8,21 @@ abstract class AuthenticationLocalDataSource {
 }
 
 class AuthenticationLocalDataSourceImpl extends AuthenticationLocalDataSource {
+
+  final _storage =  const FlutterSecureStorage();
+
   @override
   Future<void> deleteSessionId() async {
-    final authenticationBox = await Hive.openBox('authenticationBox');
-    authenticationBox.delete('session_id');
+    await _storage.delete(key: 'session_id');
   }
 
   @override
   Future<String?> getSessionId() async {
-    final authenticationBox = await Hive.openBox('authenticationBox');
-    return await authenticationBox.get('session_id');
+    return await _storage.read(key: 'session_id');
   }
 
   @override
   Future<void> saveSessionId(String sessionId) async {
-    final authenticationBox = await Hive.openBox('authenticationBox');
-    return await authenticationBox.put('session_id', sessionId);
+    await _storage.write(key: 'session_id', value: sessionId);
   }
 }

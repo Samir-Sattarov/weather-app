@@ -34,9 +34,8 @@ class SuccessFlushBar extends Flushbar {
         color: Colors.green,
       );
 
-  @override
-  EdgeInsets get margin => const EdgeInsets.all(15);
 
   @override
-  EdgeInsets get padding => const EdgeInsets.all(25);
+  EdgeInsets get margin => const EdgeInsets.all(8);
+
 }

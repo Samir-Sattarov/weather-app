@@ -35,10 +35,7 @@ class ErrorFlushBar extends Flushbar {
       );
 
   @override
-  EdgeInsets get margin => const EdgeInsets.all(15);
-  @override
-
-  EdgeInsets get padding => const EdgeInsets.all(25);
+  EdgeInsets get margin => const EdgeInsets.all(8);
 
 // @override
 // BorderRadius? get borderRadius => BorderRadius.circular(8);

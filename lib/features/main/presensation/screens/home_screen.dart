@@ -1,6 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_weather_app/core/utils/animated_navigation.dart';
+import 'package:flutter_weather_app/features/auth/presentation/cubit/login_cubit.dart';
+import 'package:flutter_weather_app/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:flutter_weather_app/features/main/domain/entity/weather_entity.dart';
+import 'package:flutter_weather_app/features/main/presensation/widget/weather_info_main_widget.dart';
+import 'package:flutter_weather_app/features/main/presensation/widget/weather_info_second_widget.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/assets.dart';
@@ -19,6 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final type = "Гроза";
   final max = 31;
   final min = 25;
+
+  final weatherEntity = WeatherEntity.empty();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,8 +43,25 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                SizedBox(height: 25.h),
-                _locationSelection("Архангельск Россия"),
+                SizedBox(height: 10.h),
+                Row(
+                  children: <Widget>[
+                    _locationSelection("Архангельск Россия"),
+                    const Spacer(),
+                    IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        onPressed: () {
+                          BlocProvider.of<LoginCubit>(context).logout();
+                          AnimatedNavigation.pushAndRemoveUntil(
+                              context: context, page: const SignInScreen());
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          color: AppColors.red.withOpacity(0.6),
+                        ))
+                  ],
+                ),
                 SizedBox(height: 25.h),
                 Stack(
                   alignment: Alignment.center,
@@ -91,16 +118,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontFamily: "Roboto",
                   ),
                 ),
-                SizedBox(height: 24.h),
-                SizedBox(
-                  height: 230.h,
-                  child: const Placeholder(),
+                SizedBox(height: 15.h),
+                WeatherInfoMainWidget(
+                  weatherEntity: weatherEntity,
                 ),
-                SizedBox(height: 24.h),
-                SizedBox(
-                  height: 96.h,
-                  child: const Placeholder(),
-                ),
+                SizedBox(height: 9.h),
+                WeatherInfoSecondWidget(weatherEntity: weatherEntity),
+
+                // SizedBox(
+                //   height: 96.h,
+                //   child: const Placeholder(),
+                // ),
               ],
             ),
           ),
@@ -112,10 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
   _locationSelection(String location) {
     return Row(
       children: <Widget>[
-        const Icon(
-          Icons.location_on_outlined,
-          color: Colors.white,
-        ),
+        SvgPicture.asset(Assets.tLocation),
         SizedBox(width: 8.w),
         Text(
           location,

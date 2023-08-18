@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_weather_app/core/entities/app_error.dart';
 import 'package:hive/hive.dart';
 import '../../../../core/entities/no_params.dart';
 import '../../domain/entities/login_request_params.dart';
@@ -11,14 +13,14 @@ import '../../domain/usecases/logout_user.dart';
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final LoginUser loginUser;
+  final SignIn signInUsecase;
   final LogoutUser logoutUser;
   // final CurrentUserCubit currentUserCubit;
 
   //final UserGetSmsForNewNumber userGetSmsForNewNumber;
   //final RestorePassword restorePassword;
   LoginCubit({
-    required this.loginUser,
+    required this.signInUsecase,
     required this.logoutUser,
     // required this.loadingCubit,
     // required this.currentUserCubit,
@@ -30,31 +32,26 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginInitial());
   }
 
-
-
-  void initiateLogin(
-      String username, String password, bool remember) async {
-    log("Sign in method");
-    final eitherResponse = await loginUser(
+  void signIn(String email, String password) async {
+    final eitherResponse = await signInUsecase(
       LoginRequestParams(
-        userName: username,
+        email: email,
         password: password,
       ),
     );
 
     eitherResponse.fold(
       (l) {
-        print("Error ${l.errorMessage}");
-        final message = l.errorMessage;
+        debugPrint("Error ${l.errorMessage}");
 
-        if (message.contains("\"code\":403")) {
-          emit(const LoginError("wrongPasswordOrUserName"));
+        if (l.appErrorType == AppErrorType.unauthorised) {
+          emit(const LoginError("userIsNotFound"));
         } else {
-          emit(LoginError(message));
+          emit(LoginError(l.errorMessage));
         }
       },
       (r) {
-        print("Login Success $r");
+        debugPrint("Login Success $r");
         emit(LoginSuccess());
       },
     );

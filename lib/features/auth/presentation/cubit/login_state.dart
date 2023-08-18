@@ -11,18 +11,6 @@ class LoginInitial extends LoginState {}
 
 class LoginSuccess extends LoginState {}
 
-
-class ChangePasswordError extends LoginState {
-  final String message;
-
-  const ChangePasswordError(this.message);
-
-  @override
-  List<Object> get props => [message];
-}
-class ChangePasswordSuccess extends LoginState {}
-
-
 class LogoutSuccess extends LoginState {}
 
 class LoginError extends LoginState {
