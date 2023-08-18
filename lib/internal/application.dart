@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../features/auth/presentation/cubit/auth/auth_cubit.dart';
 import '../features/auth/presentation/cubit/login_cubit.dart';
 import '../features/auth/presentation/screens/on_boarding_screen.dart';
+import '../features/main/presensation/screens/home_screen.dart';
 import '../locator/locator.dart';
 
 class Application extends StatefulWidget {
@@ -56,9 +57,9 @@ class _ApplicationState extends State<Application> {
           builder: (context, state) {
             print("Auth state $state");
             if (state is UserIsNotLoggedIn) {
-              return const OnBoardingScreen();
+              return const HomeScreen();
             } else if (state is UserIsLoggedIn) {
-              return const OnBoardingScreen();
+              return const HomeScreen();
             }
             return const Center(
               child: CircularProgressIndicator(),

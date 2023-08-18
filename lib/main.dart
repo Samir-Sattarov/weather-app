@@ -24,11 +24,11 @@ void main() async {
   runApp(
     EasyLocalization(
       supportedLocales: const [
-        // Locale('ru'),
-        Locale('en'),
+        Locale('ru'),
+        // Locale('en'),
       ],
       path: 'assets/translations',
-      fallbackLocale: const Locale('en'),
+      fallbackLocale: const Locale('ru'),
       child: const Application(),
     ),
   );

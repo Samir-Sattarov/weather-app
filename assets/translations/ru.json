@@ -1,3 +1,16 @@
 {
+  "enter" : "Вход",
+  "enterDataForLogin" : "Введите данные для входа ",
+  "password" : "Пароль",
+  "login" : "Войти",
+  "weatherService" : "Weather service",
+  "dawnIsComing" : "dawn is coming soon",
+  "max" : "Макс",
+  "min" : "Мин",
+  "data" : "data",
+  "data" : "data",
+  "data" : "data",
+  "data" : "data",
+  "data" : "data",
   "data" : "data"
 }
