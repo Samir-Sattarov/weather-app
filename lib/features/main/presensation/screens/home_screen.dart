@@ -7,11 +7,14 @@ import 'package:flutter_weather_app/core/utils/animated_navigation.dart';
 import 'package:flutter_weather_app/features/auth/presentation/cubit/login_cubit.dart';
 import 'package:flutter_weather_app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:flutter_weather_app/features/main/domain/entity/weather_entity.dart';
+import 'package:flutter_weather_app/features/main/presensation/cubit/weather/weather_cubit.dart';
 import 'package:flutter_weather_app/features/main/presensation/widget/weather_info_main_widget.dart';
 import 'package:flutter_weather_app/features/main/presensation/widget/weather_info_second_widget.dart';
 
+import '../../../../core/components/error_flash_bar.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/assets.dart';
+import '../../../../locator/locator.dart';
 
 class HomeScreen extends StatefulWidget {
   static route() => MaterialPageRoute(builder: (context) => const HomeScreen());
@@ -23,12 +26,36 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final temp = 28;
-  final type = "Гроза";
-  final max = 31;
-  final min = 25;
+  late WeatherCubit _weatherCubit;
 
-  final weatherEntity = WeatherEntity.empty();
+  @override
+  void initState() {
+    _weatherCubit = locator();
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _weatherCubit..load()),
+      ],
+      child: const _ContentWidget(),
+    );
+  }
+}
+
+class _ContentWidget extends StatefulWidget {
+  const _ContentWidget({Key? key}) : super(key: key);
+
+  @override
+  State<_ContentWidget> createState() => _ContentWidgetState();
+}
+
+class _ContentWidgetState extends State<_ContentWidget> {
+  var weatherEntity = WeatherEntity.empty();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,103 +65,140 @@ class _HomeScreenState extends State<HomeScreen> {
           gradient: AppColors.mainScreenBackgroundGradient,
         ),
         child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                SizedBox(height: 10.h),
-                Row(
-                  children: <Widget>[
-                    _locationSelection("Архангельск Россия"),
-                    const Spacer(),
-                    IconButton(
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        onPressed: () {
-                          BlocProvider.of<LoginCubit>(context).logout();
-                          AnimatedNavigation.pushAndRemoveUntil(
-                              context: context, page: const SignInScreen());
-                        },
-                        icon: Icon(
-                          Icons.close,
-                          color: AppColors.red.withOpacity(0.6),
-                        ))
-                  ],
-                ),
-                SizedBox(height: 25.h),
-                Stack(
-                  alignment: Alignment.center,
+          child: BlocConsumer<WeatherCubit, WeatherState>(
+            listener: (context, state) {
+              if (state is WeatherError) {
+                print("Error ${state.message}");
+                ErrorFlushBar("change_error".tr(args: [state.message.tr()]))
+                    .show(context);
+              } else if (state is WeatherServiceNotWorking) {
+                ErrorFlushBar("serviceNotEnabledInThisLocation".tr())
+                    .show(context);
+              }
+            },
+            builder: (context, state) {
+              if (state is WeatherLoaded) {
+                weatherEntity = state.entity;
+              }
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
                   children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(100)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xffAC7FF5),
-                            blurRadius: 50,
-                          )
-                        ],
-                      ),
-                      child: const SizedBox(
-                        height: 190,
-                        width: 190,
+                    SizedBox(height: 10.h),
+                    Row(
+                      children: <Widget>[
+                        _locationSelection(weatherEntity.city),
+                        const Spacer(),
+                        IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            onPressed: () {
+                              BlocProvider.of<LoginCubit>(context).logout();
+                              AnimatedNavigation.pushAndRemoveUntil(
+                                  context: context, page: const SignInScreen());
+                            },
+                            icon: Icon(
+                              Icons.close,
+                              color: AppColors.red.withOpacity(0.6),
+                            ))
+                      ],
+                    ),
+                    SizedBox(height: 25.h),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          decoration: const BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(100)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0xffAC7FF5),
+                                blurRadius: 50,
+                              )
+                            ],
+                          ),
+                          child: const SizedBox(
+                            height: 190,
+                            width: 190,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 180.h,
+                          width: 180.h,
+                          child: Center(
+                            child: Image.asset(
+                              // Assets.tBigCloudLight,
+                              _getWeatherType(weatherEntity.type),
+                              fit: BoxFit.scaleDown,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.h),
+                    Text(
+                      "${weatherEntity.temp.round()}º",
+                      style: TextStyle(
+                        fontSize: 64.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                        fontFamily: "Ubuntu",
                       ),
                     ),
-                    SizedBox(
-                      height: 180.h,
-                      width: 180.h,
-                      child: Image.asset(
-                        Assets.tBigCloudLight,
-                        fit: BoxFit.contain,
+                    Text(
+                      weatherEntity.type.tr(),
+                      style: TextStyle(
+                        fontSize: 17.sp,
+                        color: Colors.white,
+                        fontFamily: "Roboto",
                       ),
                     ),
+                    SizedBox(height: 10.h),
+                    Text(
+                      "${'max'.tr()}.: ${weatherEntity.maxDegrees.round()}º ${'min'.tr()}: ${weatherEntity.minDegrees.round()}º",
+                      style: TextStyle(
+                        fontSize: 17.sp,
+                        color: Colors.white,
+                        fontFamily: "Roboto",
+                      ),
+                    ),
+                    SizedBox(height: 15.h),
+                    WeatherInfoMainWidget(
+                      weatherEntity: weatherEntity,
+                    ),
+                    SizedBox(height: 9.h),
+                    WeatherInfoSecondWidget(weatherEntity: weatherEntity),
+
+                    // SizedBox(
+                    //   height: 96.h,
+                    //   child: const Placeholder(),
+                    // ),
                   ],
                 ),
-                SizedBox(height: 10.h),
-                Text(
-                  "$tempº",
-                  style: TextStyle(
-                    fontSize: 64.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                    fontFamily: "Ubuntu",
-                  ),
-                ),
-                Text(
-                  type,
-                  style: TextStyle(
-                    fontSize: 17.sp,
-                    color: Colors.white,
-                    fontFamily: "Roboto",
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                Text(
-                  "${'max'.tr()}.: $maxº ${'min'.tr()}: $minº",
-                  style: TextStyle(
-                    fontSize: 17.sp,
-                    color: Colors.white,
-                    fontFamily: "Roboto",
-                  ),
-                ),
-                SizedBox(height: 15.h),
-                WeatherInfoMainWidget(
-                  weatherEntity: weatherEntity,
-                ),
-                SizedBox(height: 9.h),
-                WeatherInfoSecondWidget(weatherEntity: weatherEntity),
-
-                // SizedBox(
-                //   height: 96.h,
-                //   child: const Placeholder(),
-                // ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),
     );
+  }
+
+  String _getWeatherType(String weather) {
+    if (weather == "Thunderstorm") {
+      return Assets.tBigCloudLight;
+    } else if (weather == "Drizzle") {
+      return Assets.tBigCloudStorm;
+    } else if (weather == "Rain") {
+      return Assets.tBigCloudRun;
+    } else if (weather == "Snow") {
+      return Assets.tBigCloudSnow;
+    } else if (weather == "Clouds") {
+      return Assets.tBigCloudSun;
+    }
+
+    return Assets.tBigSun;
   }
 
   _locationSelection(String location) {

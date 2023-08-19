@@ -7,8 +7,11 @@ class WeatherByHoursEntity extends Equatable {
   final String hour;
   final WeatherType type;
 
-  const WeatherByHoursEntity(
-      {required this.degrees, required this.hour, required this.type});
+  const WeatherByHoursEntity({
+    required this.degrees,
+    required this.hour,
+    required this.type,
+  });
 
   factory WeatherByHoursEntity.empty() {
     return const WeatherByHoursEntity(

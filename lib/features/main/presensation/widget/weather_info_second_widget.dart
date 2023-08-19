@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_weather_app/core/utils/string_helper.dart';
 
 import '../../../../core/utils/assets.dart';
 import '../../domain/entity/weather_entity.dart';
@@ -36,7 +37,7 @@ class WeatherInfoSecondWidget extends StatelessWidget {
                 ),
                 SizedBox(width: 8.w),
                 Text(
-                  "${weatherEntity.windy} ${"meterInSecond".tr()}",
+                  "${weatherEntity.windySpeed} ${"meterInSecond".tr()}",
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.20),
                     fontSize: 15.sp,
@@ -47,7 +48,7 @@ class WeatherInfoSecondWidget extends StatelessWidget {
                 const Spacer(),
                 FittedBox(
                   child: Text(
-                    weatherEntity.windDirection,
+                    StringHelper.getWindDirection(weatherEntity.windDirection.toDouble()),
                     style: TextStyle(
                       fontSize: 15.sp,
                       color: Colors.white,
@@ -78,7 +79,7 @@ class WeatherInfoSecondWidget extends StatelessWidget {
                 const Spacer(),
                 FittedBox(
                   child: Text(
-                    weatherEntity.humidityInfo,
+                  StringHelper.getHumidityDescription(  weatherEntity.humidity),
                     style: TextStyle(
                       fontSize: 15.sp,
                       color: Colors.white,

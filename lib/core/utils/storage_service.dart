@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-class StorageService {
+class HiveStorageService {
   save({
     required String key,
     required dynamic value,
@@ -18,5 +18,13 @@ class StorageService {
     final data = await box.get(key);
 
     return data;
+  }
+
+  Future<dynamic> clear({
+    required String boxKey,
+  }) async {
+    final box = await Hive.openBox(boxKey);
+
+    box.clear();
   }
 }

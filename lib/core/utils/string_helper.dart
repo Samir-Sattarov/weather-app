@@ -30,5 +30,42 @@ class StringHelper {
     }
   }
 
+ static String getHumidityDescription(int humidity) {
+    if (humidity <= 30) {
+      return "Сухой";
+    } else if (humidity > 30 && humidity <= 70) {
+      return "Умеренная влажность";
+    } else if (humidity > 70 && humidity < 100) {
+      return "Влажный воздух";
+    } else if (humidity == 100) {
+      return "Высокая влажность";
+    } else {
+      return "Недостоверное значение";
+    }
+  }
+
+  static String getWindDirection(double degrees) {
+    if ((degrees >= 0 && degrees <= 22.5) || (degrees > 337.5 && degrees <= 360)) {
+      return "Северный";
+    } else if (degrees > 22.5 && degrees <= 67.5) {
+      return "Северо-восточный";
+    } else if (degrees > 67.5 && degrees <= 112.5) {
+      return "Восточный";
+    } else if (degrees > 112.5 && degrees <= 157.5) {
+      return "Юго-восточный";
+    } else if (degrees > 157.5 && degrees <= 202.5) {
+      return "Южный";
+    } else if (degrees > 202.5 && degrees <= 247.5) {
+      return "Юго-западный";
+    } else if (degrees > 247.5 && degrees <= 292.5) {
+      return "Западный";
+    } else if (degrees > 292.5 && degrees <= 337.5) {
+      return "Северо-западный";
+    } else {
+      return "Недостоверное направление";
+    }
+  }
+
+
 
 }
