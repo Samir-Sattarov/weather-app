@@ -97,8 +97,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       title: 'signUpButt'.tr(),
                       onTap: () {
                         BlocProvider.of<SignUpCubit>(context).signUp(
-                          controllerLogin.text,
-                          controllerPassword.text,
+                          controllerLogin.text.trim(),
+                          controllerPassword.text.trim(),
                         );
                       },
                     ),

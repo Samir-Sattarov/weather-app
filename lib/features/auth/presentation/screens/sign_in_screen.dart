@@ -30,6 +30,13 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController controllerLogin = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
 
+
+  @override
+  void initState() {
+    controllerLogin.text ="test@gmail.com";
+    controllerPassword.text ="test123";
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return KeyboardDismissOnTap(
@@ -90,7 +97,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         title: 'login'.tr(),
                         onTap: () {
                           BlocProvider.of<LoginCubit>(context).signIn(
-                              controllerLogin.text, controllerPassword.text);
+                              controllerLogin.text.trim(),
+                              controllerPassword.text.trim());
                         },
                       ),
                       SizedBox(height: 24.h),

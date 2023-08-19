@@ -1,5 +1,7 @@
 import 'package:flutter_weather_app/features/main/domain/entity/weather_entity.dart';
 
+import 'weather_by_hours_model.dart';
+
 class WeatherModel extends WeatherEntity {
   const WeatherModel({
     required super.temp,
@@ -15,15 +17,17 @@ class WeatherModel extends WeatherEntity {
 
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
     return WeatherModel(
-      temp:  json['current']['temp'],
+      temp: json['current']['temp'],
       type: json['current']['weather'][0]['main'],
       city: json['timezone'],
-      maxDegrees:json['daily'][0]['temp']['max'],
+      maxDegrees: json['daily'][0]['temp']['max'],
       minDegrees: json['daily'][0]['temp']['min'],
       windySpeed: json['current']['wind_speed'],
-      humidity:  json['current']['humidity'],
-      windDirection:  json['current']['wind_deg'],
-      weatherByHours: [],
+      humidity: json['current']['humidity'],
+      windDirection: json['current']['wind_deg'],
+      weatherByHours: List.from(json['hourly'])
+          .map((e) => WeatherByHoursModel.fromJson(e))
+          .toList(),
     );
   }
 
@@ -53,5 +57,4 @@ class WeatherModel extends WeatherEntity {
       "weather_by_hours": weatherByHours
     };
   }
-
 }

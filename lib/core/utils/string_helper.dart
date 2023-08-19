@@ -43,6 +43,10 @@ class StringHelper {
       return "Недостоверное значение";
     }
   }
+  //
+  // static String formatDateForWeatherByHoursItem(DateTime dt) {
+  //   return
+  // }
 
   static String getWindDirection(double degrees) {
     if ((degrees >= 0 && degrees <= 22.5) || (degrees > 337.5 && degrees <= 360)) {

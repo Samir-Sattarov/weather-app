@@ -8,15 +8,18 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:permission_handler/permission_handler.dart';
 
+import 'firebase_options.dart';
 import 'internal/application.dart';
 import 'locator/locator.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
 
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    // options: DefaultFirebaseOptions.currentPlatform,
+  );
   await EasyLocalization.ensureInitialized();
 
-  await Firebase.initializeApp();
 
   setup();
 

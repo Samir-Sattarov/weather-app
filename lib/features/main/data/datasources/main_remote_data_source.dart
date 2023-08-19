@@ -20,10 +20,13 @@ class MainRemoteDataSourceImpl extends MainRemoteDataSource {
   @override
   Future<WeatherModel> loadWeather({required num lan, required num lon}) async {
     final response = await _client.get(
-      "${ApiConstants.weather}?lat=${lan.toStringAsFixed(2)}&units=metric&exclude=minutely&lon=${lon.toStringAsFixed(2)}&appid=${ApiConstants.weatherApiKey}",
+      // "${ApiConstants.weather}?lat=${lan.toStringAsFixed(2)}&units=metric&exclude=minutely&lon=${lon.toStringAsFixed(2)}&appid=${ApiConstants.weatherApiKey}",
+      "${ApiConstants.weather}?lat=${39.65}&units=metric&exclude=minutely&lon=${66.97}&appid=${ApiConstants.weatherApiKey}&lang=ru",
     );
     // log("Response Weather $response");
 
     return WeatherModel.fromJson(Map<String,dynamic>.from(response));
   }
 }
+
+

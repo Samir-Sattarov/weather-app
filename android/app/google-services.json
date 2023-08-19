@@ -29,6 +29,13 @@
             {
               "client_id": "318108725897-de8btt92kblen5c1if29jejrglmlt7tt.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "318108725897-7hdcljp7f2e0100jdkbhnvqrsr7tppq1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterWeatherApp"
+              }
             }
           ]
         }

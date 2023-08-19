@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -60,13 +61,17 @@ class WeatherInfoMainWidget extends StatelessWidget {
             height: 142.h,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => _Item(
-                      hour: "15:00",
-                      degrees: 23,
-                      type: 1,
-                      isActive: index == 1,
-                    ),
-                itemCount: 6),
+                itemBuilder: (context, index) {
+                  final data = weatherEntity.weatherByHours[index];
+                 final  dateTime = DateTime.fromMicrosecondsSinceEpoch(int.parse(data.millisecondsFromEpoch) * 1000);
+
+                  return _Item(
+                    dateTime: dateTime,
+                    temp: data.temp,
+                    type: data.type,
+                  );
+                },
+                itemCount: weatherEntity.weatherByHours.length),
           ),
           SizedBox(height: 16.h),
         ],
@@ -75,18 +80,37 @@ class WeatherInfoMainWidget extends StatelessWidget {
   }
 }
 
-class _Item extends StatelessWidget {
-  final String hour;
-  final int degrees;
-  final int type;
-  final bool isActive;
-  const _Item(
-      {Key? key,
-      required this.hour,
-      required this.degrees,
-      required this.type,
-      required this.isActive})
-      : super(key: key);
+class _Item extends StatefulWidget {
+  final DateTime dateTime;
+  final num temp;
+  final String type;
+  const _Item({
+    Key? key,
+    required this.dateTime,
+    required this.temp,
+    required this.type,
+  }) : super(key: key);
+
+  @override
+  State<_Item> createState() => _ItemState();
+}
+
+class _ItemState extends State<_Item> {
+  bool isActive = false;
+
+  @override
+  void initState() {
+
+    isActive = isSmallestDifference(widget.dateTime);
+    super.initState();
+  }
+
+  bool isSmallestDifference(DateTime inputDate) {
+    DateTime currentDate = DateTime.now();
+    Duration difference = inputDate.difference(currentDate);
+
+    return difference.inMilliseconds.abs() <= Duration.millisecondsPerDay;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +125,7 @@ class _Item extends StatelessWidget {
         children: [
           SizedBox(height: 16.h),
           Text(
-            hour,
+            DateFormat.Hm().format(widget.dateTime.toLocal()).toString(),
             style: TextStyle(
               color: Colors.white,
               fontSize: 15.sp,
@@ -109,10 +133,10 @@ class _Item extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.h),
-          SvgPicture.asset(Assets.tCloudRain),
+          SvgPicture.asset(_getWeatherType(widget.type)),
           SizedBox(height: 16.h),
           Text(
-            "$degreesº",
+            "${widget.temp.round()}º",
             style: TextStyle(
               color: Colors.white,
               fontSize: 17.sp,
@@ -124,5 +148,21 @@ class _Item extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getWeatherType(String weather) {
+    if (weather == "Thunderstorm") {
+      return Assets.tCloudLightning;
+    } else if (weather == "Drizzle") {
+      return Assets.tCloudMoon;
+    } else if (weather == "Rain") {
+      return Assets.tCloudRain;
+    } else if (weather == "Snow") {
+      return Assets.tCloudSnow;
+    } else if (weather == "Clouds") {
+      return Assets.tCloudSun;
+    }
+
+    return Assets.tSun;
   }
 }
