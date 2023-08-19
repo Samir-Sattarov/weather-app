@@ -23,6 +23,12 @@ class SignUpCubit extends Cubit<SignUpState> {
       (l) {
         final message = l.errorMessage;
         debugPrint("Sign up error $message");
+
+        if(l.errorMessage.contains("EMAIL_EXISTS")) {
+          emit(const SignUpError("emailAlreadyExist"));
+
+          return;
+        }
         emit(SignUpError(message));
       },
       (r) {

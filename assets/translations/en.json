@@ -22,6 +22,9 @@
   "Snow" : "Snow",
   "Clouds" : "Clouds",
   "Clear" : "Sunny",
+  "emailAlreadyExist" : "Email is already exist",
+  "serviceNotEnabledInThisLocation" : "Service not enabled in your location",
+
   "data" : "data",
   "data" : "data",
   "data" : "data",

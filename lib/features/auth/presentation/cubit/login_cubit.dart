@@ -44,11 +44,14 @@ class LoginCubit extends Cubit<LoginState> {
       (l) {
         debugPrint("Error ${l.errorMessage}");
 
-        if (l.appErrorType == AppErrorType.unauthorised) {
+
+
+        if (l.errorMessage.contains("INVALID_PASSWORD")) {
           emit(const LoginError("userIsNotFound"));
-        } else {
-          emit(LoginError(l.errorMessage));
+          return ;
         }
+          emit(LoginError(l.errorMessage));
+
       },
       (r) {
         debugPrint("Login Success $r");

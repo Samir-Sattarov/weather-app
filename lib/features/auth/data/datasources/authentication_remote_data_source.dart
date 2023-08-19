@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_weather_app/core/api/api_exceptions.dart';
 
 import '../../../../core/api/api_client.dart';
 import '../../../../core/api/api_constants.dart';
@@ -14,32 +15,39 @@ abstract class AuthenticationRemoteDataSource {
 
 class AuthenticationRemoteDataSourceImpl
     extends AuthenticationRemoteDataSource {
-  final FirebaseAuthentication _client;
+  // final FirebaseAuthentication _client;
+  final ApiClient _client;
 
   AuthenticationRemoteDataSourceImpl(this._client);
 
   @override
   Future<String> signIn(LoginRequestParams params) async {
-    final response = await _client.signInWithEmail(
-      email: params.email,
-      password: params.password,
+    final Map<String, dynamic> response = await _client.post(
+      ApiConstants.signIn,
+      params: {
+        "email": params.email,
+        "returnSecureToken": true,
+        "password": params.password,
+      },
+      withBaseUrl: false,
+      isFirebase: true,
     );
-
-    log(response.toString(), name: "Token");
 
     print("Validate login $response");
 
-    return response;
+    final token = response["idToken"];
+    return token;
   }
+
   @override
   Future<bool> signUp(LoginRequestParams params) async {
-    final response = await _client.signUp(
-      email: params.email,
-      password: params.password,
-    );
+    final response = await _client.post(ApiConstants.signUp, params: {
+      "email": params.email,
+      "returnSecureToken": true,
+      "password": params.password,
+    },      withBaseUrl: false,
+      isFirebase: true,);
 
-
-
-    return response;
+    return true;
   }
 }

@@ -80,6 +80,12 @@ class _ContentWidgetState extends State<_ContentWidget> {
               if (state is WeatherLoaded) {
                 weatherEntity = state.entity;
               }
+              if (state is WeatherLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Column(
@@ -91,17 +97,32 @@ class _ContentWidgetState extends State<_ContentWidget> {
                         _locationSelection(weatherEntity.city),
                         const Spacer(),
                         IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            onPressed: () {
-                              BlocProvider.of<LoginCubit>(context).logout();
-                              AnimatedNavigation.pushAndRemoveUntil(
-                                  context: context, page: const SignInScreen());
-                            },
-                            icon: Icon(
-                              Icons.close,
-                              color: AppColors.red.withOpacity(0.6),
-                            ))
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onPressed: () {
+
+                            BlocProvider.of<WeatherCubit>(context).load();
+
+
+                          },
+                          icon: Icon(
+                            Icons.refresh,
+                            color: AppColors.red.withOpacity(0.6),
+                          ),
+                        ),
+                        SizedBox(width: 30.w), IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onPressed: () {
+                            BlocProvider.of<LoginCubit>(context).logout();
+                            AnimatedNavigation.pushAndRemoveUntil(
+                                context: context, page: const SignInScreen());
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            color: AppColors.red.withOpacity(0.6),
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(height: 25.h),
@@ -165,9 +186,9 @@ class _ContentWidgetState extends State<_ContentWidget> {
                       ),
                     ),
                     SizedBox(height: 15.h),
-                    WeatherInfoMainWidget(
-                      weatherEntity: weatherEntity,
-                    ),
+                    // WeatherInfoMainWidget(
+                    //   weatherEntity: weatherEntity,
+                    // ),
                     SizedBox(height: 9.h),
                     WeatherInfoSecondWidget(weatherEntity: weatherEntity),
 

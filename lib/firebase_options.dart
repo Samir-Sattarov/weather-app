@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCVpz6S4FV2oJ4LM4sPvCOYIDM2mPBOuko',
-    appId: '1:318108725897:android:6c9e686ab9a3d8600b4c58',
-    messagingSenderId: '318108725897',
-    projectId: 'weather-app-4d5eb',
-    storageBucket: 'weather-app-4d5eb.appspot.com',
+    apiKey: 'AIzaSyBru-D__mToj85pEiyKySca4bRz8RSp-aY',
+    appId: '1:218045474554:android:466bd4b8331be196c7cb43',
+    messagingSenderId: '218045474554',
+    projectId: 'weather-gaz-prom',
+    storageBucket: 'weather-gaz-prom.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAOCJnlI42cGVXaQRun7e997nPoitKukow',
-    appId: '1:318108725897:ios:1e4420d77f7d73840b4c58',
-    messagingSenderId: '318108725897',
-    projectId: 'weather-app-4d5eb',
-    storageBucket: 'weather-app-4d5eb.appspot.com',
-    iosClientId: '318108725897-7hdcljp7f2e0100jdkbhnvqrsr7tppq1.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBGa7J4hdTsWRZ_b2r-7A4iAfNdmp8-WEs',
+    appId: '1:218045474554:ios:437a6728312fd4bbc7cb43',
+    messagingSenderId: '218045474554',
+    projectId: 'weather-gaz-prom',
+    storageBucket: 'weather-gaz-prom.appspot.com',
+    iosClientId: '218045474554-3l3q7ievvujpgkodhod6fmcvnmoaun8b.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterWeatherApp',
   );
 }

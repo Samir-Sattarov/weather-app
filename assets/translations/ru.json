@@ -24,7 +24,8 @@
   "Snow" : "Снег",
   "Clouds" : "Облачно",
   "Clear" : "Солнечно",
-  "data" : "data",
+  "emailAlreadyExist" : "Электронная почта уже зарегистрирована",
+  "serviceNotEnabledInThisLocation" : "Сервис не работает в вашем регионе",
   "data" : "data",
   "data" : "data",
   "data" : "data"

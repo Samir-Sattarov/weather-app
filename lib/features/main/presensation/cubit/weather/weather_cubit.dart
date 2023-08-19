@@ -13,9 +13,7 @@ class WeatherCubit extends Cubit<WeatherState> {
   WeatherCubit(this.loadWeather) : super(WeatherInitial());
 
   load() async {
-    final position = await _checkEnabledAndGetPosition();
-
-    if (position == null) return;
+    final position = await Geolocator.getCurrentPosition();
 
     final data = await loadWeather.call(
       LoadWeatherParams(lan: position.latitude, lon: position.longitude),
@@ -30,15 +28,4 @@ class WeatherCubit extends Cubit<WeatherState> {
     );
   }
 
-  Future<Position?> _checkEnabledAndGetPosition() async {
-    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-
-    if (!serviceEnabled) {
-      emit(WeatherServiceNotWorking());
-      return null;
-    }
-
-    final position = await Geolocator.getCurrentPosition();
-    return position;
-  }
 }

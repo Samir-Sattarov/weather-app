@@ -64,6 +64,13 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
 
 
       return Right(response);
+    } on SocketException {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorised));
+    } on ExceptionWithMessage catch (e) {
+      return Left(AppError(
+          appErrorType: AppErrorType.msgError, errorMessage: e.message));
     } on Exception {
       return const Left(AppError(appErrorType: AppErrorType.api));
     }
