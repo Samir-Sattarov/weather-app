@@ -3,25 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/entities/no_params.dart';
 import '../../domain/entities/login_request_params.dart';
-import '../../domain/usecases/login_user.dart';
-import '../../domain/usecases/logout_user.dart';
+import '../../domain/usecases/auth.dart';
 
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final SignIn signInUsecase;
   final LogoutUser logoutUser;
-  // final CurrentUserCubit currentUserCubit;
 
-  //final UserGetSmsForNewNumber userGetSmsForNewNumber;
-  //final RestorePassword restorePassword;
   LoginCubit({
     required this.signInUsecase,
     required this.logoutUser,
-    // required this.loadingCubit,
-    // required this.currentUserCubit,
-    //required this.userGetSmsForNewNumber,
-    //required this.restorePassword,
   }) : super(LoginInitial());
 
   void init() {

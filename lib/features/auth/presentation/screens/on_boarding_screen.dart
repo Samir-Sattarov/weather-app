@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_weather_app/features/auth/presentation/screens/sign_in_screen.dart';
 
+import '../../../../core/utils/animated_navigation.dart';
 import '../../../../core/utils/app_colors.dart';
+import 'sign_in_screen.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -18,7 +19,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   void initState() {
     Timer(const Duration(seconds: 2), () {
-      Navigator.push(context, SignInScreen.route());
+      AnimatedNavigation.pushAndRemoveUntil(
+        context: context,
+        page: const SignInScreen(),
+      );
     });
     super.initState();
   }

@@ -16,9 +16,6 @@ import '../../../../core/components/error_flash_bar.dart';
 import '../../../../core/utils/app_colors.dart';
 
 class SignUpScreen extends StatefulWidget {
-  static route() => MaterialPageRoute(
-        builder: (context) => const SignUpScreen(),
-      );
 
   const SignUpScreen({Key? key}) : super(key: key);
 

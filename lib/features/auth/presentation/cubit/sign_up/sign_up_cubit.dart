@@ -3,12 +3,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../../domain/entities/login_request_params.dart';
-import '../../../domain/usecases/login_user.dart';
+import '../../../domain/usecases/auth.dart';
 
 part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   final SignUp signUpUsecase;
+
   SignUpCubit(this.signUpUsecase) : super(SignUpInitial());
 
   void signUp(String email, String password) async {
@@ -24,7 +25,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         final message = l.errorMessage;
         debugPrint("Sign up error $message");
 
-        if(l.errorMessage.contains("EMAIL_EXISTS")) {
+        if (l.errorMessage.contains("EMAIL_EXISTS")) {
           emit(const SignUpError("emailAlreadyExist"));
 
           return;

@@ -23,8 +23,6 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   Future<Either<AppError, bool>> logginedUser() async {
     final sessionId = await _authenticationLocalDataSource.getSessionId();
 
-    // print("Session $sessionId");
-
     if (sessionId == null || sessionId.isEmpty) {
       return const Right(false);
     } else {

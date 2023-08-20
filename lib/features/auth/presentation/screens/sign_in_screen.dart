@@ -16,10 +16,6 @@ import '../../../../core/utils/animated_navigation.dart';
 import '../../../../core/utils/app_colors.dart';
 
 class SignInScreen extends StatefulWidget {
-  static route() => MaterialPageRoute(
-        builder: (context) => const SignInScreen(),
-      );
-
   const SignInScreen({Key? key}) : super(key: key);
 
   @override
@@ -30,13 +26,13 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController controllerLogin = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
 
-
   @override
   void initState() {
-    controllerLogin.text ="test@gmail.com";
-    controllerPassword.text ="test123456";
+    controllerLogin.text = "test@gmail.com";
+    controllerPassword.text = "test123456";
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return KeyboardDismissOnTap(

@@ -11,7 +11,6 @@ abstract class AuthenticationRemoteDataSource {
 
 class AuthenticationRemoteDataSourceImpl
     extends AuthenticationRemoteDataSource {
-  // final FirebaseAuthentication _client;
   final ApiClient _client;
 
   AuthenticationRemoteDataSourceImpl(this._client);

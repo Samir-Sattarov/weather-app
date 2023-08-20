@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_weather_app/core/utils/storage_service.dart';
+import 'package:flutter_weather_app/core/utils/hive_storage_service.dart';
 import 'package:flutter_weather_app/features/main/data/model/weather_model.dart';
 
 abstract class MainLocalDataSource {
