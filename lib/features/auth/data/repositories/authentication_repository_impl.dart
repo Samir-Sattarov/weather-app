@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:flutter/foundation.dart';
 
 import '../../../../core/api/api_exceptions.dart';
 import '../../../../core/entities/app_error.dart';
@@ -10,7 +9,6 @@ import '../../domain/entities/login_request_params.dart';
 import '../../domain/repositories/authentication_repository.dart';
 import '../datasources/authentication_local_data_source.dart';
 import '../datasources/authentication_remote_data_source.dart';
-import '../models/request_token_model.dart';
 
 class AuthenticationRepositoryImpl extends AuthenticationRepository {
   final AuthenticationLocalDataSource _authenticationLocalDataSource;

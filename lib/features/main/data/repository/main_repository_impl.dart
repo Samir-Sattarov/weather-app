@@ -2,15 +2,14 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_weather_app/features/main/data/datasources/main_local_data_source.dart';
-import 'package:flutter_weather_app/features/main/data/datasources/main_remote_data_source.dart';
-import 'package:flutter_weather_app/features/main/domain/entity/weather_by_hours_result_entity.dart';
-import 'package:flutter_weather_app/features/main/domain/entity/weather_entity.dart';
 
 import '../../../../core/api/api_exceptions.dart';
 import '../../../../core/api/network_info.dart';
 import '../../../../core/entities/app_error.dart';
+import '../../domain/entity/weather_entity.dart';
 import '../../domain/repository/main_repository.dart';
+import '../datasources/main_local_data_source.dart';
+import '../datasources/main_remote_data_source.dart';
 
 class MainRepositoryImpl implements MainRepository {
   final MainRemoteDataSource mainRemoteDataSource;

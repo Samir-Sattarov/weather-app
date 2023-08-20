@@ -1,10 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_weather_app/features/main/domain/entity/weather_by_hours_result_entity.dart';
 import 'package:flutter_weather_app/features/main/domain/entity/weather_entity.dart';
 import 'package:flutter_weather_app/features/main/domain/repository/main_repository.dart';
 
 import '../../../../core/entities/app_error.dart';
-import '../../../../core/entities/no_params.dart';
 import '../../../../core/usecases/usecase.dart';
 
 class LoadWeather extends UseCase<WeatherEntity, LoadWeatherParams> {

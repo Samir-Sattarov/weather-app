@@ -3,20 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_weather_app/core/utils/animated_navigation.dart';
-import 'package:flutter_weather_app/features/auth/presentation/cubit/login_cubit.dart';
-import 'package:flutter_weather_app/features/auth/presentation/screens/sign_in_screen.dart';
-import 'package:flutter_weather_app/features/main/domain/entity/weather_by_hours_entity.dart';
-import 'package:flutter_weather_app/features/main/domain/entity/weather_entity.dart';
-import 'package:flutter_weather_app/features/main/presensation/cubit/weather/current_weather_temp/current_weather_temp_cubit.dart';
-import 'package:flutter_weather_app/features/main/presensation/cubit/weather/weather_cubit.dart';
-import 'package:flutter_weather_app/features/main/presensation/widget/weather_info_main_widget.dart';
-import 'package:flutter_weather_app/features/main/presensation/widget/weather_info_second_widget.dart';
 
 import '../../../../core/components/error_flash_bar.dart';
+import '../../../../core/utils/animated_navigation.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/assets.dart';
 import '../../../../locator/locator.dart';
+import '../../../auth/presentation/cubit/login_cubit.dart';
+import '../../../auth/presentation/screens/sign_in_screen.dart';
+import '../../domain/entity/weather_entity.dart';
+import '../cubit/weather/current_weather_temp/current_weather_temp_cubit.dart';
+import '../cubit/weather/weather_cubit.dart';
+import '../widget/weather_info_main_widget.dart';
+import '../widget/weather_info_second_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   static route() => MaterialPageRoute(builder: (context) => const HomeScreen());
@@ -78,7 +77,7 @@ class _ContentWidgetState extends State<_ContentWidget> {
                 weatherEntity = state.entity;
               }
               if (state is WeatherError) {
-                print("Error ${state.message}");
+                debugPrint("Error ${state.message}");
                 ErrorFlushBar("change_error".tr(args: [state.message.tr()]))
                     .show(context);
               } else if (state is WeatherHasntData) {
@@ -133,7 +132,8 @@ class _ContentWidgetState extends State<_ContentWidget> {
                       children: [
                         Container(
                           decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(100)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(100)),
                             boxShadow: [
                               BoxShadow(
                                 color: Color(0xffAC7FF5),
@@ -195,9 +195,10 @@ class _ContentWidgetState extends State<_ContentWidget> {
                       listWeather: weatherEntity.listWeatherByHours,
                     ),
                     SizedBox(height: 9.h),
-                    WeatherInfoSecondWidget(weatherEntity: weatherEntity),
+                    WeatherInfoSecondWidget(
+                      weatherEntity: weatherEntity,
+                    ),
                     SizedBox(height: 8.h),
-
                   ],
                 ),
               );

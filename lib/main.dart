@@ -8,7 +8,6 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:permission_handler/permission_handler.dart';
 
-import 'firebase_options.dart';
 import 'internal/application.dart';
 import 'locator/locator.dart';
 

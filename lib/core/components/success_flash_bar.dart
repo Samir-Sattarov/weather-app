@@ -3,7 +3,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/app_colors.dart';
 
 class SuccessFlushBar extends Flushbar {
   final String msg;

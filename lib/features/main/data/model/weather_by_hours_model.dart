@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../domain/entity/weather_by_hours_entity.dart';
 

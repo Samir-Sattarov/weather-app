@@ -1,10 +1,6 @@
-import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_weather_app/core/entities/app_error.dart';
-import 'package:hive/hive.dart';
 import '../../../../core/entities/no_params.dart';
 import '../../domain/entities/login_request_params.dart';
 import '../../domain/usecases/login_user.dart';

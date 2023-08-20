@@ -1,18 +1,10 @@
-import 'package:flutter_weather_app/core/api/firebase_auth.dart';
-import 'package:flutter_weather_app/core/utils/storage_service.dart';
-import 'package:flutter_weather_app/features/auth/presentation/cubit/login_cubit.dart';
-import 'package:flutter_weather_app/features/main/data/datasources/main_local_data_source.dart';
-import 'package:flutter_weather_app/features/main/data/datasources/main_remote_data_source.dart';
-import 'package:flutter_weather_app/features/main/data/repository/main_repository_impl.dart';
-import 'package:flutter_weather_app/features/main/domain/repository/main_repository.dart';
-import 'package:flutter_weather_app/features/main/domain/usecases/main_usecases.dart';
-import 'package:flutter_weather_app/features/main/presensation/cubit/weather/weather_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import '../core/api/api_client.dart';
 import '../core/api/network_info.dart';
+import '../core/utils/storage_service.dart';
 import '../features/auth/data/datasources/authentication_local_data_source.dart';
 import '../features/auth/data/datasources/authentication_remote_data_source.dart';
 import '../features/auth/data/repositories/authentication_repository_impl.dart';
@@ -21,8 +13,15 @@ import '../features/auth/domain/usecases/auth.dart';
 import '../features/auth/domain/usecases/login_user.dart';
 import '../features/auth/domain/usecases/logout_user.dart';
 import '../features/auth/presentation/cubit/auth/auth_cubit.dart';
+import '../features/auth/presentation/cubit/login_cubit.dart';
 import '../features/auth/presentation/cubit/sign_up/sign_up_cubit.dart';
+import '../features/main/data/datasources/main_local_data_source.dart';
+import '../features/main/data/datasources/main_remote_data_source.dart';
+import '../features/main/data/repository/main_repository_impl.dart';
+import '../features/main/domain/repository/main_repository.dart';
+import '../features/main/domain/usecases/main_usecases.dart';
 import '../features/main/presensation/cubit/weather/current_weather_temp/current_weather_temp_cubit.dart';
+import '../features/main/presensation/cubit/weather/weather_cubit.dart';
 
 final locator = GetIt.I;
 
@@ -114,8 +113,6 @@ void setup() {
 
   locator
       .registerLazySingleton<ApiClient>(() => ApiClient(locator(), locator()));
-  locator.registerLazySingleton<FirebaseAuthentication>(
-      () => FirebaseAuthentication());
 
   // ================ External ================ //
 

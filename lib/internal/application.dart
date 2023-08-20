@@ -2,11 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_weather_app/features/auth/presentation/cubit/sign_up/sign_up_cubit.dart';
-import 'package:flutter_weather_app/features/auth/presentation/screens/sign_in_screen.dart';
 
 import '../features/auth/presentation/cubit/auth/auth_cubit.dart';
 import '../features/auth/presentation/cubit/login_cubit.dart';
+import '../features/auth/presentation/cubit/sign_up/sign_up_cubit.dart';
 import '../features/auth/presentation/screens/on_boarding_screen.dart';
 import '../features/main/presensation/screens/home_screen.dart';
 import '../locator/locator.dart';
@@ -60,7 +59,7 @@ class _ApplicationState extends State<Application> {
         },
         child: BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) {
-            print("Auth state $state");
+            debugPrint("Auth state $state");
             if (state is UserIsNotLoggedIn) {
               return const OnBoardingScreen();
             } else if (state is UserIsLoggedIn) {

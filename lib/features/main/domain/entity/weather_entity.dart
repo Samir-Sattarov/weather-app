@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_weather_app/features/main/domain/entity/weather_by_hours_entity.dart';
 
-import 'weather_by_hours_result_entity.dart';
 
 class WeatherEntity extends Equatable {
   final num temp;
