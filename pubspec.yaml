@@ -55,6 +55,7 @@ dependencies:
   firebase_storage: ^11.2.6
   permission_handler: ^10.4.3
   geolocator: ^10.0.0
+  internet_connection_checker: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:

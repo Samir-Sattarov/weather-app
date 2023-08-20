@@ -1,20 +1,26 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_weather_app/features/main/domain/entity/weather_by_hours_entity.dart';
+import 'package:flutter_weather_app/features/main/presensation/cubit/weather/current_weather_temp/current_weather_temp_cubit.dart';
 
 import '../../../../core/utils/assets.dart';
 import '../../../../core/utils/string_helper.dart';
-import '../../domain/entity/weather_entity.dart';
 
-class WeatherInfoMainWidget extends StatelessWidget {
-  final WeatherEntity weatherEntity;
+class WeatherInfoMainWidget extends StatefulWidget {
+  final List<WeatherByHoursEntity> listWeather;
   const WeatherInfoMainWidget({
     Key? key,
-    required this.weatherEntity,
+    required this.listWeather,
   }) : super(key: key);
 
+  @override
+  State<WeatherInfoMainWidget> createState() => _WeatherInfoMainWidgetState();
+}
+
+class _WeatherInfoMainWidgetState extends State<WeatherInfoMainWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,19 +65,40 @@ class WeatherInfoMainWidget extends StatelessWidget {
           SizedBox(height: 16.h),
           SizedBox(
             height: 142.h,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  final data = weatherEntity.weatherByHours[index];
-                 final  dateTime = DateTime.fromMicrosecondsSinceEpoch(int.parse(data.millisecondsFromEpoch) * 1000);
+            child: widget.listWeather.isEmpty
+                ? Center(
+                    child: Text(
+                      "empty".tr(),
+                      style: TextStyle(
+                        fontSize: 17.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: "Roboto",
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      final data = widget.listWeather[index];
 
-                  return _Item(
-                    dateTime: dateTime,
-                    temp: data.temp,
-                    type: data.type,
-                  );
-                },
-                itemCount: weatherEntity.weatherByHours.length),
+                      final dateTime = DateTime.fromMillisecondsSinceEpoch(
+                        data.millisecondsFromEpoch * 1000,
+                        isUtc: true,
+                      );
+
+                      if (dateTime.day !=
+                          (Duration.hoursPerDay - DateTime.now().day)) {
+                        return _Item(
+                          dateTime: dateTime,
+                          temp: data.temp,
+                          type: data.type,
+                        );
+                      }
+                      return null;
+                    },
+                    itemCount: widget.listWeather.length,
+                  ),
           ),
           SizedBox(height: 16.h),
         ],
@@ -100,16 +127,22 @@ class _ItemState extends State<_Item> {
 
   @override
   void initState() {
-
-    isActive = isSmallestDifference(widget.dateTime);
+    initialize();
     super.initState();
   }
 
-  bool isSmallestDifference(DateTime inputDate) {
-    DateTime currentDate = DateTime.now();
-    Duration difference = inputDate.difference(currentDate);
+  initialize() {
+    isActive = isActiveChecker(widget.dateTime);
 
-    return difference.inMilliseconds.abs() <= Duration.millisecondsPerDay;
+    if (isActive) {
+      BlocProvider.of<CurrentWeatherTempCubit>(context).set(widget.temp);
+    }
+  }
+
+  bool isActiveChecker(DateTime inputDate) {
+    DateTime currentDate = DateTime.now();
+    return inputDate.hour == currentDate.hour &&
+        currentDate.day == inputDate.day;
   }
 
   @override
@@ -125,7 +158,7 @@ class _ItemState extends State<_Item> {
         children: [
           SizedBox(height: 16.h),
           Text(
-            DateFormat.Hm().format(widget.dateTime.toLocal()).toString(),
+            DateFormat.Hm().format(widget.dateTime),
             style: TextStyle(
               color: Colors.white,
               fontSize: 15.sp,

@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_weather_app/features/main/domain/entity/weather_by_hours_result_entity.dart';
 import 'package:flutter_weather_app/features/main/domain/entity/weather_entity.dart';
 import 'package:flutter_weather_app/features/main/domain/repository/main_repository.dart';
 

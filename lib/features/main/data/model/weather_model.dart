@@ -11,8 +11,8 @@ class WeatherModel extends WeatherEntity {
     required super.minDegrees,
     required super.windySpeed,
     required super.humidity,
+    required super.listWeatherByHours,
     required super.windDirection,
-    required super.weatherByHours,
   });
 
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
@@ -24,10 +24,10 @@ class WeatherModel extends WeatherEntity {
       minDegrees: json['daily'][0]['temp']['min'],
       windySpeed: json['current']['wind_speed'],
       humidity: json['current']['humidity'],
-      windDirection: json['current']['wind_deg'],
-      weatherByHours: List.from(json['hourly'])
-          .map((e) => WeatherByHoursModel.fromJson(e))
+      listWeatherByHours: List.from(json['hourly'])
+          .map((e) => WeatherByHoursModel.fromJson(Map<String,dynamic>.from(e)))
           .toList(),
+      windDirection: json['current']['wind_deg'],
     );
   }
 
@@ -41,20 +41,34 @@ class WeatherModel extends WeatherEntity {
       windySpeed: entity.windySpeed,
       humidity: entity.humidity,
       windDirection: entity.windDirection,
-      weatherByHours: entity.weatherByHours,
+      listWeatherByHours: entity.listWeatherByHours,
     );
   }
   Map<String, dynamic> toJson() {
     return {
-      "temp": temp,
-      "city": city,
-      "type": type,
-      "max_degrees": maxDegrees,
-      "min_degrees": minDegrees,
-      "windy_speed": windySpeed,
-      "humidity": humidity,
-      "wind_direction": windDirection,
-      "weather_by_hours": weatherByHours
+      'current': {
+        'temp': temp,
+        'weather': [
+          {
+            'main': type,
+          }
+        ],
+        'wind_speed': windySpeed,
+        'humidity': humidity,
+        'wind_deg': windDirection,
+      },
+      'timezone': city,
+      'daily': [
+        {
+          'temp': {'max': maxDegrees, 'min': minDegrees},
+        },
+        // здесь могут быть другие элементы daily
+      ],
+      'hourly': listWeatherByHours.map((e) {
+        final model = WeatherByHoursModel.fromEntity(e);
+
+        return model.toJson();
+      }).toList(),
     };
   }
 }

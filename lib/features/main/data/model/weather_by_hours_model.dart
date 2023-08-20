@@ -10,37 +10,27 @@ class WeatherByHoursModel extends WeatherByHoursEntity {
   });
 
   factory WeatherByHoursModel.fromJson(Map<String, dynamic> json) {
-    /*
-    {
-      "dt":1692439200;
-    "temp":289.21;
-    "feels_like":289.04;
-    "pressure":1008;
-    "humidity":83;
-    "dew_point":286.33;
-    "uvi":0;
-    "clouds":0;
-    "visibility":10000;
-    "wind_speed":0.77;
-    "wind_deg":215;
-    "wind_gust":0.92;
-    "weather":[
-     {
-               "id":800,
-               "main":"Clear",
-               "description":"clear sky",
-               "icon":"01n"
-            }
-            ];
-    "pop":0;
-  };
-
-  */
-
     return WeatherByHoursModel(
       temp: json['temp'],
-      millisecondsFromEpoch: json['dt'].toString(),
-      type: json['weather'][0]['main'],
+      millisecondsFromEpoch: json['dt'] ,
+      type:  json['weather'][0]['main'] ,
     );
+  }
+  factory WeatherByHoursModel.fromEntity(WeatherByHoursEntity entity) {
+    return WeatherByHoursModel(
+      temp: entity.temp,
+      millisecondsFromEpoch: entity.millisecondsFromEpoch,
+      type: entity.type,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['temp'] = temp;
+    data['dt'] = millisecondsFromEpoch;
+    data['weather'] = [
+      {'main': type}
+    ];
+    return data;
   }
 }

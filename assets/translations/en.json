@@ -24,9 +24,8 @@
   "Clear" : "Sunny",
   "emailAlreadyExist" : "Email is already exist",
   "serviceNotEnabledInThisLocation" : "Service not enabled in your location",
-
-  "data" : "data",
-  "data" : "data",
+  "empty" : "Empty",
+  "networkIsNotConnectedAndHasnotLocalData" : "No connection and no data in storage",
   "data" : "data",
   "data" : "data",
   "data" : "data"

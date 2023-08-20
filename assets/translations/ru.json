@@ -26,6 +26,12 @@
   "Clear" : "Солнечно",
   "emailAlreadyExist" : "Электронная почта уже зарегистрирована",
   "serviceNotEnabledInThisLocation" : "Сервис не работает в вашем регионе",
+  "empty" : "Пусто",
+  "networkIsNotConnectedAndHasnotLocalData" : "Подключение отсутствует и нет данных в хранилище",
+  "data" : "data",
+  "data" : "data",
+  "data" : "data",
+  "data" : "data",
   "data" : "data",
   "data" : "data",
   "data" : "data"

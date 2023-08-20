@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/core/utils/storage_service.dart';
 import 'package:flutter_weather_app/features/main/data/model/weather_model.dart';
 
@@ -19,9 +20,9 @@ class MainLocalDataSourceImpl extends MainLocalDataSource {
     final json =
         await storageService.fetch(key: "weather", boxKey: "weatherBox");
 
-    if (json != null) return null;
+    if (json == null) return null;
 
-    final model = WeatherModel.fromJson(json);
+    final model = WeatherModel.fromJson(Map<String,dynamic>.from(json));
 
     return model;
   }
@@ -33,6 +34,7 @@ class MainLocalDataSourceImpl extends MainLocalDataSource {
       boxKey: "weatherBox",
       value: model.toJson(),
     );
+    debugPrint("Succes saved to local storage!!");
 
     return model;
   }

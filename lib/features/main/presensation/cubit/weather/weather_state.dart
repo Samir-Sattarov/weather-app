@@ -13,6 +13,9 @@ class WeatherInitial extends WeatherState {
 class WeatherServiceNotWorking extends WeatherState {
   @override
   List<Object> get props => [];
+}class WeatherHasntData extends WeatherState {
+  @override
+  List<Object> get props => [];
 }
 
 class WeatherError extends WeatherState {

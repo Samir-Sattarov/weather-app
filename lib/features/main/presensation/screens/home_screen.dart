@@ -6,7 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_weather_app/core/utils/animated_navigation.dart';
 import 'package:flutter_weather_app/features/auth/presentation/cubit/login_cubit.dart';
 import 'package:flutter_weather_app/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:flutter_weather_app/features/main/domain/entity/weather_by_hours_entity.dart';
 import 'package:flutter_weather_app/features/main/domain/entity/weather_entity.dart';
+import 'package:flutter_weather_app/features/main/presensation/cubit/weather/current_weather_temp/current_weather_temp_cubit.dart';
 import 'package:flutter_weather_app/features/main/presensation/cubit/weather/weather_cubit.dart';
 import 'package:flutter_weather_app/features/main/presensation/widget/weather_info_main_widget.dart';
 import 'package:flutter_weather_app/features/main/presensation/widget/weather_info_second_widget.dart';
@@ -27,10 +29,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late WeatherCubit _weatherCubit;
+  late CurrentWeatherTempCubit _currentWeatherTempCubit;
 
   @override
   void initState() {
     _weatherCubit = locator();
+    _currentWeatherTempCubit = locator();
 
     super.initState();
   }
@@ -40,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: _weatherCubit..load()),
+        BlocProvider.value(value: _currentWeatherTempCubit),
       ],
       child: const _ContentWidget(),
     );
@@ -65,11 +70,20 @@ class _ContentWidgetState extends State<_ContentWidget> {
           gradient: AppColors.mainScreenBackgroundGradient,
         ),
         child: SafeArea(
+            child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: BlocConsumer<WeatherCubit, WeatherState>(
             listener: (context, state) {
+              if (state is WeatherLoaded) {
+                weatherEntity = state.entity;
+              }
               if (state is WeatherError) {
                 print("Error ${state.message}");
                 ErrorFlushBar("change_error".tr(args: [state.message.tr()]))
+                    .show(context);
+              } else if (state is WeatherHasntData) {
+                ErrorFlushBar("change_error".tr(
+                        args: ["networkIsNotConnectedAndHasnotLocalData".tr()]))
                     .show(context);
               } else if (state is WeatherServiceNotWorking) {
                 ErrorFlushBar("serviceNotEnabledInThisLocation".tr())
@@ -77,17 +91,7 @@ class _ContentWidgetState extends State<_ContentWidget> {
               }
             },
             builder: (context, state) {
-              if (state is WeatherLoaded) {
-                weatherEntity = state.entity;
-              }
-              if (state is WeatherLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
+              return SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -100,17 +104,15 @@ class _ContentWidgetState extends State<_ContentWidget> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-
                             BlocProvider.of<WeatherCubit>(context).load();
-
-
                           },
                           icon: Icon(
                             Icons.refresh,
                             color: AppColors.red.withOpacity(0.6),
                           ),
                         ),
-                        SizedBox(width: 30.w), IconButton(
+                        SizedBox(width: 30.w),
+                        IconButton(
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
@@ -131,8 +133,7 @@ class _ContentWidgetState extends State<_ContentWidget> {
                       children: [
                         Container(
                           decoration: const BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(100)),
+                            borderRadius: BorderRadius.all(Radius.circular(100)),
                             boxShadow: [
                               BoxShadow(
                                 color: Color(0xffAC7FF5),
@@ -159,14 +160,18 @@ class _ContentWidgetState extends State<_ContentWidget> {
                       ],
                     ),
                     SizedBox(height: 10.h),
-                    Text(
-                      "${weatherEntity.temp.round()}º",
-                      style: TextStyle(
-                        fontSize: 64.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                        fontFamily: "Ubuntu",
-                      ),
+                    BlocBuilder<CurrentWeatherTempCubit, num>(
+                      builder: (context, state) {
+                        return Text(
+                          "${state.round()}º",
+                          style: TextStyle(
+                            fontSize: 64.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            fontFamily: "Ubuntu",
+                          ),
+                        );
+                      },
                     ),
                     Text(
                       weatherEntity.type.tr(),
@@ -186,22 +191,19 @@ class _ContentWidgetState extends State<_ContentWidget> {
                       ),
                     ),
                     SizedBox(height: 15.h),
-                    // WeatherInfoMainWidget(
-                    //   weatherEntity: weatherEntity,
-                    // ),
+                    WeatherInfoMainWidget(
+                      listWeather: weatherEntity.listWeatherByHours,
+                    ),
                     SizedBox(height: 9.h),
                     WeatherInfoSecondWidget(weatherEntity: weatherEntity),
+                    SizedBox(height: 8.h),
 
-                    // SizedBox(
-                    //   height: 96.h,
-                    //   child: const Placeholder(),
-                    // ),
                   ],
                 ),
               );
             },
           ),
-        ),
+        )),
       ),
     );
   }

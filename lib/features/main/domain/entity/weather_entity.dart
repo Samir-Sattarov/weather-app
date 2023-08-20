@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_weather_app/features/main/domain/entity/weather_by_hours_entity.dart';
 
+import 'weather_by_hours_result_entity.dart';
+
 class WeatherEntity extends Equatable {
   final num temp;
   final num maxDegrees;
@@ -9,7 +11,7 @@ class WeatherEntity extends Equatable {
   final num windySpeed;
   final int humidity;
   final String type;
-  final List<WeatherByHoursEntity> weatherByHours;
+  final List<WeatherByHoursEntity> listWeatherByHours;
   final num windDirection;
 
   const WeatherEntity({
@@ -20,8 +22,8 @@ class WeatherEntity extends Equatable {
     required this.minDegrees,
     required this.windySpeed,
     required this.humidity,
+    required this.listWeatherByHours,
     required this.windDirection,
-    required this.weatherByHours,
   });
 
   factory WeatherEntity.empty() {
@@ -29,15 +31,10 @@ class WeatherEntity extends Equatable {
       temp: 20,
       city: "Архангельск Россия",
       type: "Rain",
-      windySpeed: 1,
-      humidity: 3,
+      windySpeed: 10,
+      humidity: 100,
+      listWeatherByHours:[],
       windDirection: 40,
-      weatherByHours: [
-        // WeatherByHoursEntity(
-        //     degrees: 20, hour: "8:00", type: WeatherType.sunny),
-        // WeatherByHoursEntity(
-        //     degrees: 30, hour: "8:00", type: WeatherType.storm),
-      ],
       maxDegrees: 30,
       minDegrees: 20,
     );

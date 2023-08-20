@@ -9,8 +9,10 @@ import 'package:flutter_weather_app/features/main/domain/usecases/main_usecases.
 import 'package:flutter_weather_app/features/main/presensation/cubit/weather/weather_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import '../core/api/api_client.dart';
+import '../core/api/network_info.dart';
 import '../features/auth/data/datasources/authentication_local_data_source.dart';
 import '../features/auth/data/datasources/authentication_remote_data_source.dart';
 import '../features/auth/data/repositories/authentication_repository_impl.dart';
@@ -20,6 +22,7 @@ import '../features/auth/domain/usecases/login_user.dart';
 import '../features/auth/domain/usecases/logout_user.dart';
 import '../features/auth/presentation/cubit/auth/auth_cubit.dart';
 import '../features/auth/presentation/cubit/sign_up/sign_up_cubit.dart';
+import '../features/main/presensation/cubit/weather/current_weather_temp/current_weather_temp_cubit.dart';
 
 final locator = GetIt.I;
 
@@ -35,6 +38,7 @@ void setup() {
   locator.registerFactory(() => WeatherCubit(
         locator(),
       ));
+  locator.registerFactory(() => CurrentWeatherTempCubit());
 
   // locator.registerFactory(() => LocaleCubit(
   // ));
@@ -62,6 +66,7 @@ void setup() {
 
   locator.registerLazySingleton<MainRepository>(
     () => MainRepositoryImpl(
+      locator(),
       locator(),
       locator(),
     ),
@@ -113,6 +118,13 @@ void setup() {
       () => FirebaseAuthentication());
 
   // ================ External ================ //
+
+  locator.registerLazySingleton(() => InternetConnectionChecker());
+
+  locator.registerLazySingleton<NetworkInfo>(
+        () => NetworkInfoImp(locator()),
+  );
+
 
   locator.registerLazySingleton<HiveStorageService>(() => HiveStorageService());
 }

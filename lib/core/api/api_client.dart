@@ -8,22 +8,24 @@ import '../../features/auth/data/datasources/authentication_local_data_source.da
 import 'api_constants.dart';
 import 'api_exceptions.dart';
 
-
-
-class ApiClient  {
+class ApiClient {
   final AuthenticationLocalDataSource _authenticationLocalDataSource;
   final Client _client;
 
   ApiClient(this._client, this._authenticationLocalDataSource);
 
   @override
-  Future<dynamic> get(String path, {Map<dynamic, dynamic>? params}) async {
+  Future<dynamic> get(
+    String path, {
+    Map<dynamic, dynamic>? params,
+    String? baseUrl,
+  }) async {
     String sessionId =
         await _authenticationLocalDataSource.getSessionId() ?? "";
 
-    final pth = getPath(path, params);
+    final pth = getPath(path, params, baseUrl);
 
-    print("Pth $pth");
+    debugPrint("Pth $pth");
 
     final response = await _client.get(
       pth, //?format=json
@@ -63,10 +65,12 @@ class ApiClient  {
     }
   }
 
-
   @override
   Future<dynamic> post(String path,
-      {Map<dynamic, dynamic>? params, bool withToken = true, bool withBaseUrl = true, bool isFirebase = false}) async {
+      {Map<dynamic, dynamic>? params,
+      bool withToken = true,
+      bool withBaseUrl = true,
+      bool isFirebase = false}) async {
     String sessionId =
         await _authenticationLocalDataSource.getSessionId() ?? "";
     Map<String, String> userHeader = {
@@ -81,8 +85,7 @@ class ApiClient  {
       userHeader.addAll({'Authorization': 'Bearer $sessionId'});
     }
 
-    final uri = Uri.parse(withBaseUrl ?  ApiConstants.baseApiUrl + path :  path);
-
+    final uri = Uri.parse(withBaseUrl ? ApiConstants.baseApiUrl + path : path);
 
     final response = await _client.post(
       uri,
@@ -97,23 +100,18 @@ class ApiClient  {
       print(utf8.decode(response.bodyBytes));
     }
 
-
-
-
     if (response.statusCode == 400 ||
         response.statusCode == 403 ||
         response.statusCode == 405) {
       String msg = "unknown_error";
-      Map<String,dynamic> resp = jsonDecode(utf8.decode(response.bodyBytes));
+      Map<String, dynamic> resp = jsonDecode(utf8.decode(response.bodyBytes));
 
       print("Resp $resp");
       if (resp.containsKey("error")) {
-        if(isFirebase){
+        if (isFirebase) {
           msg = resp["error"]['message'];
-
-        }else {
+        } else {
           msg = resp["error"];
-
         }
       } else if (resp.containsKey("message")) {
         var rsp = resp["message"];
@@ -132,14 +130,15 @@ class ApiClient  {
       print("Expetion with message");
       throw ExceptionWithMessage(msg);
     }
-    if (response.statusCode == 401  ) {
+    if (response.statusCode == 401) {
       throw UnauthorisedException();
     } else if (response.statusCode == 404) {
       throw const ExceptionWithMessage("Not found");
-    } if (response.statusCode == 200 || response.statusCode == 201) {
+    }
+    if (response.statusCode == 200 || response.statusCode == 201) {
       // print("Everyt thing ok");
       return json.decode(utf8.decode(response.bodyBytes));
-    }else {
+    } else {
       print("Exception ${response.reasonPhrase}");
       throw Exception(response.reasonPhrase);
     }
@@ -250,7 +249,7 @@ class ApiClient  {
   //   }
   // }
 
-  Uri getPath(String path, Map<dynamic, dynamic>? params) {
+  Uri getPath(String path, Map<dynamic, dynamic>? params, String? baseUrl) {
     var paramsString = '';
     if (params?.isNotEmpty ?? false) {
       params?.forEach((key, value) {
@@ -258,7 +257,8 @@ class ApiClient  {
       });
     }
 
-    return Uri.parse('${ApiConstants.baseApiUrl}$path$paramsString');
+    return Uri.parse(
+        '${baseUrl ?? ApiConstants.baseApiUrl}$path$paramsString');
     // '${ApiConstants.BASE_URL}$path?api_key=${ApiConstants.API_KEY}$paramsString');
   }
 }
